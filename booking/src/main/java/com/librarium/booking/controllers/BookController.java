@@ -21,6 +21,7 @@ public class BookController {
     @GetMapping("/all")
     @ResponseBody
     public List<Book> listBooks(@RequestParam int page){
+
         return listBooks.listBooks(page);
     }
 }
