@@ -57,4 +57,7 @@ class RentBookTest {
         assertEquals(returned.getUser().getCpf(), legalDocument);
         assertNotNull(returned.getDate());
     }
+
+    // TODO: Bloquear alugar livro que esteja alugado pelo cliente
+
 }

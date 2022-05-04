@@ -18,6 +18,7 @@ public class Rent implements Serializable {
     private User user;
     private LocalDateTime date;
     private int daysUntilDeadline;
+    private LocalDateTime returnalDate;
 
     public Book getBook() {
         return book;
@@ -59,6 +60,14 @@ public class Rent implements Serializable {
         this.id = id;
     }
 
+    public LocalDateTime getReturnalDate() {
+        return returnalDate;
+    }
+
+    public void setReturnalDate(LocalDateTime returnalDate) {
+        this.returnalDate = returnalDate;
+    }
+
     @Override
     public String toString() {
         return "Rent{" +
@@ -67,6 +76,11 @@ public class Rent implements Serializable {
                 ", user=" + user +
                 ", date=" + date +
                 ", daysUntilDeadline=" + daysUntilDeadline +
+                ", returnalDate=" + returnalDate +
                 '}';
+    }
+
+    public void returnBook() {
+        setReturnalDate(LocalDateTime.now());
     }
 }

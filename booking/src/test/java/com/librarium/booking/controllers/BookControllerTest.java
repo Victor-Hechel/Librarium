@@ -44,4 +44,8 @@ class BookControllerTest {
         verify(listBooks, times(1)).listBooks(Mockito.anyInt());
 
     }
+
+    // TODO: Testar rent
+
+    // TODO: Testar return
 }
