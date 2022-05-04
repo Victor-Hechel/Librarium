@@ -20,6 +20,14 @@ public class Rent implements Serializable {
     private int daysUntilDeadline;
     private LocalDateTime returnalDate;
 
+    public void returnBook() {
+        setReturnalDate(LocalDateTime.now());
+    }
+
+    public boolean wasReturned() {
+        return this.returnalDate != null;
+    }
+
     public Book getBook() {
         return book;
     }
@@ -80,7 +88,4 @@ public class Rent implements Serializable {
                 '}';
     }
 
-    public void returnBook() {
-        setReturnalDate(LocalDateTime.now());
-    }
 }
