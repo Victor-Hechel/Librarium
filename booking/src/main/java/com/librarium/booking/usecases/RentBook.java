@@ -40,6 +40,14 @@ public class RentBook {
         User user = this.userRepository.findById(legalDocument)
                 .orElseThrow(IllegalArgumentException::new);
 
+        this.rentRepository.findByUserAndBook(legalDocument, isbn)
+                .stream()
+                .filter(x -> x.getReturnalDate() == null)
+                .findAny()
+                .ifPresent(x -> {
+                    throw new IllegalArgumentException("User already rent this book");
+                });
+
         rent.setBook(book);
         rent.setUser(user);
         rent.setDaysUntilDeadline(daysUntilDeadline);
@@ -47,4 +55,5 @@ public class RentBook {
 
         return this.rentRepository.save(rent);
     }
+
 }

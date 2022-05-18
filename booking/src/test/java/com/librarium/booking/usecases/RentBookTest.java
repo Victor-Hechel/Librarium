@@ -6,6 +6,7 @@ import com.librarium.booking.models.User;
 import com.librarium.booking.repositories.BookRepository;
 import com.librarium.booking.repositories.RentRepository;
 import com.librarium.booking.repositories.UserRepository;
+import com.librarium.booking.usecases.exceptions.BookAlreadyReturnedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,11 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RentBookTest {
@@ -58,6 +60,20 @@ class RentBookTest {
         assertNotNull(returned.getDate());
     }
 
-    // TODO: Bloquear alugar livro que esteja alugado pelo cliente
+    @Test
+    public void shouldNotRentWhenUserAlreadyRentThisBook() {
+        String isbn = "123";
+        String legalDocument = "456";
+        Book bookFound = new Book(isbn);
+        when(this.bookRepository.findById(isbn)).thenReturn(Optional.of(bookFound));
+        User userFound = new User(legalDocument);
+        when(this.userRepository.findById(legalDocument)).thenReturn(Optional.of(userFound));
+        when(this.rentRepository.findByUserAndBook(any(), any())).thenReturn(Arrays.asList(new Rent()));
 
+        assertThrows(IllegalArgumentException.class,  () -> this.rentBook.execute(legalDocument, isbn));
+
+        // then
+        verify(this.rentRepository,  times(0)).save(any());
+
+    }
 }
