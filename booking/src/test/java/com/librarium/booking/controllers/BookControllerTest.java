@@ -45,7 +45,4 @@ class BookControllerTest {
 
     }
 
-    // TODO: Testar rent
-
-    // TODO: Testar return
 }
