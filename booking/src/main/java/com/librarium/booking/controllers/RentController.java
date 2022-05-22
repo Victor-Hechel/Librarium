@@ -31,5 +31,4 @@ public class RentController {
         return this.returnBook.execute(id);
     }
 
-    // TODO: listar alugueis do cliente
 }
