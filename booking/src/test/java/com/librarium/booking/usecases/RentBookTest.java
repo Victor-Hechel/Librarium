@@ -6,7 +6,6 @@ import com.librarium.booking.models.User;
 import com.librarium.booking.repositories.BookRepository;
 import com.librarium.booking.repositories.RentRepository;
 import com.librarium.booking.repositories.UserRepository;
-import com.librarium.booking.usecases.exceptions.BookAlreadyReturnedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +43,9 @@ class RentBookTest {
         when(this.bookRepository.findById(isbn)).thenReturn(Optional.of(bookFound));
         User userFound = new User(legalDocument);
         when(this.userRepository.findById(legalDocument)).thenReturn(Optional.of(userFound));
+        Rent oldRent = new Rent();
+        oldRent.setReturnalDate(LocalDateTime.of(2022, 3, 2, 10, 20));
+        when(this.rentRepository.findByUserAndBook(any(), any())).thenReturn(List.of(oldRent));
 
         Rent saved = new Rent();
         saved.setId(1L);
@@ -68,7 +70,7 @@ class RentBookTest {
         when(this.bookRepository.findById(isbn)).thenReturn(Optional.of(bookFound));
         User userFound = new User(legalDocument);
         when(this.userRepository.findById(legalDocument)).thenReturn(Optional.of(userFound));
-        when(this.rentRepository.findByUserAndBook(any(), any())).thenReturn(Arrays.asList(new Rent()));
+        when(this.rentRepository.findByUserAndBook(any(), any())).thenReturn(List.of(new Rent()));
 
         assertThrows(IllegalArgumentException.class,  () -> this.rentBook.execute(legalDocument, isbn));
 
